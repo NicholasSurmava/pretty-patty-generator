@@ -1,13 +1,15 @@
 const express = require("express");
 const app = express();
+const path = require("path");
 const menu = require("../config");
+
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 
 let takeOrder = async () => {
   return new Promise((done) => {
     console.log("May I take your order?");
-    menu.forEach((item) => {
-      console.log(item);
-    });
+    console.log("Order taken!");
     done();
   });
 };
@@ -22,7 +24,9 @@ let createPrettyPatty = async (menu) => {
 };
 
 app.get("/", async (req, res) => {
-  res.json(menu);
+  takeOrder();
+  await createPrettyPatty("Green");
+  res.render("index", { menu });
 });
 
 module.exports = app;
